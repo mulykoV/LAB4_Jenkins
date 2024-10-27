@@ -26,7 +26,7 @@ pipeline {
             }
             steps {
                 sh 'apk add --no-cache python3 py3-pip'
-                sh 'pip install -r requirments.txt'  // Виправлено назву файлу
+                sh 'pip install -r requirments.txt'
                 sh 'python3 LAB4_test.py'
             }
             post {
@@ -50,15 +50,19 @@ pipeline {
             }
             steps {
                 script {
-                    // Логін у Docker Hub
-                    sh "echo $DOCKER_CREDENTIALS_PSW | docker login -u $DOCKER_CREDENTIALS_USR --password-stdin"
+                    // Логін у Docker Hub без інтерполяції Groovy
+                    sh '''
+                        echo "$DOCKER_CREDENTIALS_PSW" | docker login -u "$DOCKER_CREDENTIALS_USR" --password-stdin
+                    '''
                     
                     // Створення Docker образу
                     sh 'docker build -t myapp:${BUILD_NUMBER} .'
                     
                     // Завантаження образу у Docker Hub
-                    sh 'docker tag myapp:${BUILD_NUMBER} $DOCKER_CREDENTIALS_USR/myapp:${BUILD_NUMBER}'
-                    sh 'docker push $DOCKER_CREDENTIALS_USR/myapp:${BUILD_NUMBER}'
+                    sh '''
+                        docker tag myapp:${BUILD_NUMBER} "$DOCKER_CREDENTIALS_USR/myapp:${BUILD_NUMBER}"
+                        docker push "$DOCKER_CREDENTIALS_USR/myapp:${BUILD_NUMBER}"
+                    '''
                 }
             }
             post {
