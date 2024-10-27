@@ -19,7 +19,12 @@ pipeline {
             }
         }
         stage('Test') {
-            agent { docker { image 'python:3.9-alpine' args '-u root' } }
+            agent { 
+                docker { 
+                    image 'python:3.9-alpine', 
+                    args '-u root' 
+                } 
+            }
             steps {
                 sh 'apk add --no-cache python3 py3-pip'
                 sh 'pip install -r requirements.txt'
@@ -38,7 +43,12 @@ pipeline {
             }
         }
         stage('Docker Build') {
-            agent { docker { image 'docker:latest' args '-u root -v /var/run/docker.sock:/var/run/docker.sock' } }
+            agent { 
+                docker { 
+                    image 'docker:latest', 
+                    args '-u root -v /var/run/docker.sock:/var/run/docker.sock' 
+                } 
+            }
             steps {
                 script {
                     // Логін у Docker Hub
