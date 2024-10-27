@@ -2,7 +2,7 @@ pipeline {
     options { timestamps() }
     agent none
     environment {
-        DOCKER_USERNAME = credentials('docker-hub-username')
+        DOCKER_CREDENTIALS = credentials('docker-hub-username')
     }
     stages {
         stage('Check scm') {
@@ -26,7 +26,7 @@ pipeline {
             }
             steps {
                 sh 'apk add --no-cache python3 py3-pip'
-                sh 'pip install -r requirments.txt'
+                sh 'pip install -r requirements.txt'  // Виправлено назву файлу
                 sh 'python3 LAB4_test.py'
             }
             post {
@@ -51,14 +51,14 @@ pipeline {
             steps {
                 script {
                     // Логін у Docker Hub
-                    sh "echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin"
+                    sh "echo $DOCKER_CREDENTIALS_PSW | docker login -u $DOCKER_CREDENTIALS_USR --password-stdin"
                     
                     // Створення Docker образу
                     sh 'docker build -t myapp:${BUILD_NUMBER} .'
                     
                     // Завантаження образу у Docker Hub
-                    sh 'docker tag myapp:${BUILD_NUMBER} $DOCKER_USERNAME/myapp:${BUILD_NUMBER}'
-                    sh 'docker push $DOCKER_USERNAME/myapp:${BUILD_NUMBER}'
+                    sh 'docker tag myapp:${BUILD_NUMBER} $DOCKER_CREDENTIALS_USR/myapp:${BUILD_NUMBER}'
+                    sh 'docker push $DOCKER_CREDENTIALS_USR/myapp:${BUILD_NUMBER}'
                 }
             }
             post {
