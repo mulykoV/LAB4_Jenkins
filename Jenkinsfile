@@ -21,8 +21,8 @@ pipeline {
         stage('Test') {
             agent { 
                 docker { 
-                    image 'python:3.9-alpine', 
-                    args '-u root' 
+                    image 'python:3.9-alpine'
+                    args '-u root'
                 } 
             }
             steps {
@@ -45,8 +45,8 @@ pipeline {
         stage('Docker Build') {
             agent { 
                 docker { 
-                    image 'docker:latest', 
-                    args '-u root -v /var/run/docker.sock:/var/run/docker.sock' 
+                    image 'docker:latest'
+                    args '-u root -v /var/run/docker.sock:/var/run/docker.sock'
                 } 
             }
             steps {
