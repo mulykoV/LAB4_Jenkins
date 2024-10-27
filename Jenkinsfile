@@ -26,7 +26,7 @@ pipeline {
             }
             steps {
                 sh 'apk add --no-cache python3 py3-pip'
-                sh 'pip install -r requirements.txt'  // Виправлено назву файлу
+                sh 'pip install -r requirments.txt'  // Виправлено назву файлу
                 sh 'python3 LAB4_test.py'
             }
             post {
