@@ -26,7 +26,7 @@ pipeline {
             }
             steps {
                 sh 'apk add --no-cache python3 py3-pip'
-                sh 'pip install -r requirements.txt'
+                sh 'pip install -r requirments.txt'
                 sh 'python3 LAB4_test.py'
             }
             post {
