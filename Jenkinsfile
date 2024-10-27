@@ -8,6 +8,14 @@ pipeline {
                 checkout scm
             }
         }
+
+        stage('Push to Docker Hub') {
+            steps {
+                script {
+                    sh 'echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin'
+                    
+                    // Завантаження образу на Docker Hub
+                    sh 'docker push programmingtechnologyvova123/lab4_jenkins:1.1'
         stage('Build') {
             steps {
                 echo "Building ...${BUILD_NUMBER}"
