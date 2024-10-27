@@ -3,7 +3,6 @@ pipeline {
     agent none
     environment {
         DOCKER_USERNAME = credentials('docker-hub-username')
-        DOCKER_PASSWORD = credentials('docker-hub-password')
     }
     stages {
         stage('Check scm') {
