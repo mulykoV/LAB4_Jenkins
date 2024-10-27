@@ -16,6 +16,7 @@ pipeline {
         }
 
         stage('Build') {
+            agent any // Додаємо агент для стадії Build
             steps {
                 echo "Building ... ${BUILD_NUMBER}"
                 // Команда для побудови Docker образу
@@ -25,6 +26,7 @@ pipeline {
         }
 
         stage('Push to Docker Hub') {
+            agent any // Додаємо агент для стадії Push
             steps {
                 script {
                     // Логін до Docker Hub
@@ -37,7 +39,12 @@ pipeline {
         }
 
         stage('Test') {
-            agent { docker { image 'python:3.9-alpine' args '-u root' } }
+            agent {
+                docker {
+                    image 'python:3.9-alpine'
+                    args '-u root'
+                }
+            }
             steps {
                 sh 'apk add --no-cache python3 py3-pip'
                 sh 'pip install -r requirments.txt' 
